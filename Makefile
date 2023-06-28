@@ -6,6 +6,10 @@ docker-build:
 docker-build-test:
 	source .env.test && docker-compose -f docker-compose.yaml up -d --build || exit 1
 
+PHONY: migrate
+migrate:
+	npx dotenv -e .env.develop prisma migrate dev
+
 .PHONY: setup
 setup:
 	$(MAKE) docker-build
