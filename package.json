@@ -2,7 +2,7 @@
   "name": "sample_task_api",
   "version": "1.0.0",
   "description": "簡易的なタスク管理アプリのAPIです",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "node dist/app.js",
     "build": "tsc",
