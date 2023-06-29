@@ -1,16 +1,22 @@
 import { UserRepositoryIF } from "../domain/repository/user";
 import { PrismaClient, Prisma } from '@prisma/client';
+import { ErrorType } from '../shared/error';
+import { logger } from '..//shared/logger';
 
 export class UserRepository implements UserRepositoryIF {
     private prisma = new PrismaClient()
 
     async GetUserbyEmail(email: string) {
         try {
-            const user = await this.prisma.user.findUnique({ where: { email: email } })
+            const user = await this.prisma.user.findFirst({ where: { email: email } })
+            if (user == null) {
+                logger.warn(ErrorType.User.ErrorNotFound);
+                return null;
+            }
             return user;
         } catch (error) {
-            console.error("Error occurred while fetching user by email: ", error);
-            throw new Error('Error fetching user');
+            logger.error(ErrorType.User.ErrorFetching, error);
+            throw new Error(ErrorType.User.ErrorFetching);
         }
     }
 
@@ -19,8 +25,8 @@ export class UserRepository implements UserRepositoryIF {
             const newUser = await this.prisma.user.create({ data: user })
             return newUser
         } catch (error) {
-            console.error("Error occurred while creating user: ", error);
-            throw new Error('Error creating user');
+            logger.error(ErrorType.User.ErrorCreating, error);
+            throw new Error(ErrorType.User.ErrorCreating);
         }
     }
 }

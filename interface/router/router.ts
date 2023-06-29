@@ -2,17 +2,24 @@ import express from "express";
 import core from 'express-serve-static-core';
 import morgan from 'morgan';
 import { Controller } from "../../injector/controller";
+import { logger } from '../../shared/logger';
 
 export const Router = (): core.Express => {
     const app = express();
 
     app.use(morgan('dev'));
+    app.use(express.json());
 
     const controller = Controller.NewController();
 
     app.route('/users')
-        .post((req, res) => {
-            controller.User.CreateUser(req, res);
+        .post(async (req, res) => {
+            try {
+                controller.User.CreateUser(req, res);
+            } catch (error) {
+                logger.error(error);
+                res.status(500).send('An unexpected error occurred');
+            }
         });
 
     app.route('/login')

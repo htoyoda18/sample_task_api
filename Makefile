@@ -18,10 +18,12 @@ migrate:
 .PHONY: setup
 setup:
 	$(MAKE) docker-build
+	$(MAKE) log-api
 
 .PHONY: setup-test
 setup-test:
 	$(MAKE) docker-build-test
+	$(MAKE) log-api
 
 .PHONY: down
 down:
@@ -43,6 +45,7 @@ log-api-test:
 restart:
 	$(MAKE) down
 	$(MAKE) docker-build
+	$(MAKE) log-api
 
 .PHONY: restart-test
 restart-test:
