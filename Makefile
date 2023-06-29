@@ -1,10 +1,15 @@
 .PHONY: docker-build
 docker-build:
+	$(MAKE) generate-init-sql
 	source .env.develop && docker-compose -f docker-compose.yaml up -d --build || exit 1
 
 .PHONY: docker-build-test
 docker-build-test:
 	source .env.test && docker-compose -f docker-compose.yaml up -d --build || exit 1
+
+.PHONY: generate-init-sql
+generate-init-sql:
+	./db/generate_init.sh
 
 PHONY: migrate
 migrate:
