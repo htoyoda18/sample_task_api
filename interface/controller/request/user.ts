@@ -1,5 +1,11 @@
 import Joi from 'joi';
 
+export interface userCreateRequestData {
+    name: string;
+    email: string;
+    pass: string;
+}
+
 export const userCreateRequest = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),

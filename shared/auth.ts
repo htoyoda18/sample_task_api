@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { ErrorType } from "./error";
 import { envConfig } from "./env";
+import { logger } from './logger';
 
 interface TokenPayload {
     userID: string;
@@ -15,8 +16,8 @@ export const generateToken = (userID: string): string => {
         const token = jwt.sign(payload, envConfig.JWT_KEY, { expiresIn: envConfig.JWT_TOKEN_EXPIRE, algorithm: 'HS256' });
         return token;
     } catch (error) {
-        console.error("Error generating JWT token:", error);
-        throw new Error(ErrorType.FailGeneratingJWT);
+        logger.error(ErrorType.JWT.FailGenerating, error);
+        throw new Error(ErrorType.JWT.FailGenerating);
     }
 }
 
@@ -27,10 +28,11 @@ export const parseToken = (token: string): string => {
         if (decoded && decoded.userID) {
             return decoded.userID;
         } else {
-            throw new Error(ErrorType.InvalidToken);
+            logger.error(ErrorType.JWT.InvalidToken);
+            throw new Error(ErrorType.JWT.ParseError);
         }
     } catch (error) {
-        console.error("Error parsing JWT token:", error);
-        throw new Error(ErrorType.InvalidToken);
+        logger.error(ErrorType.JWT.InvalidToken, error);
+        throw new Error(ErrorType.JWT.InvalidToken);
     }
 }

@@ -23,13 +23,17 @@ services:
   api:
     container_name: ${API_CONTAINER_NAME}
     command: >
-      /bin/sh -c "dockerize -wait tcp://db:3306 -timeout 90s && yarn dev"
+      /bin/sh -c "\
+      dockerize -wait tcp://${DB_CONTAINER_NAME}:${DB_PORT} -timeout 90s && \
+      npx prisma generate && \
+      npx dotenv -e .env.develop prisma migrate dev && \
+      yarn dev"
     build:
       context: ./
       dockerfile: Dockerfile.api
     tty: true
     ports:
-      - ${API_PORT}:8080
+      - ${API_PORT}:${CONTAINER_API_PORT}
     env_file:
       - ${ENV_FILE}
     depends_on:

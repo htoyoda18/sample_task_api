@@ -1,10 +1,15 @@
 .PHONY: docker-build
 docker-build:
+	$(MAKE) generate-init-sql
 	source .env.develop && docker-compose -f docker-compose.yaml up -d --build || exit 1
 
 .PHONY: docker-build-test
 docker-build-test:
 	source .env.test && docker-compose -f docker-compose.yaml up -d --build || exit 1
+
+.PHONY: generate-init-sql
+generate-init-sql:
+	./db/generate_init.sh
 
 PHONY: migrate
 migrate:
@@ -13,10 +18,12 @@ migrate:
 .PHONY: setup
 setup:
 	$(MAKE) docker-build
+	$(MAKE) log-api
 
 .PHONY: setup-test
 setup-test:
 	$(MAKE) docker-build-test
+	$(MAKE) log-api
 
 .PHONY: down
 down:
@@ -38,6 +45,7 @@ log-api-test:
 restart:
 	$(MAKE) down
 	$(MAKE) docker-build
+	$(MAKE) log-api
 
 .PHONY: restart-test
 restart-test:
