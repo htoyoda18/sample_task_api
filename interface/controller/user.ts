@@ -31,9 +31,13 @@ export class UserController implements UserControllerIF {
                 const token = generateToken(newUser.id);
                 res.status(200).send(token);
             }
-        } catch (error) {
+        } catch (error: any) {
             logger.warn(error);
-            res.status(400).send(error);
+            if (error.message && error.message === ErrorType.User.AlredyExists) {
+                res.status(400).send(ErrorType.User.AlredyExists);
+                return;
+            }
+            res.status(500).send(error);
         }
     }
 }
