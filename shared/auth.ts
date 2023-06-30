@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import { ErrorType } from "./error";
 import { envConfig } from "./env";
 import { logger } from './logger';
-import e from "express";
 
 interface TokenPayload {
     userID: string;

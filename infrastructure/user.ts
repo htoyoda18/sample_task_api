@@ -6,7 +6,7 @@ import { logger } from '..//shared/logger';
 export class UserRepository implements UserRepositoryIF {
     private prisma = new PrismaClient()
 
-    async GetUserbyEmail(email: string) {
+    async GetUserbyEmail(email: string): Promise<Prisma.UserCreateInput | null> {
         try {
             const user = await this.prisma.user.findFirst({ where: { email: email } })
             if (user == null) {
@@ -20,7 +20,7 @@ export class UserRepository implements UserRepositoryIF {
         }
     }
 
-    async CreateUser(user: Prisma.UserCreateInput) {
+    async CreateUser(user: Prisma.UserCreateInput): Promise<Prisma.UserCreateInput> {
         try {
             const newUser = await this.prisma.user.create({ data: user })
             return newUser

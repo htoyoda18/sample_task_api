@@ -3,6 +3,7 @@ import { userCreateRequest, userCreateRequestData } from './request/user';
 import { ErrorType } from '../../shared/error';
 import { UserUsecase } from '../../usecase/user';
 import { logger } from '../../shared/logger';
+import { generateToken } from '../../shared/auth';
 
 interface UserControllerIF {
     CreateUser(req: Request, res: Response): Promise<void>;
@@ -25,8 +26,11 @@ export class UserController implements UserControllerIF {
             }
 
             const userCreateRequestData: userCreateRequestData = validationResult.value;
-            await this.userUsecase.CreateUser(userCreateRequestData);
-            res.status(200).send('OK');
+            const newUser = await this.userUsecase.CreateUser(userCreateRequestData);
+            if (newUser) {
+                const token = generateToken(newUser.id);
+                res.status(200).send(token);
+            }
         } catch (error) {
             logger.warn(error);
             res.status(400).send(error);

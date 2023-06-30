@@ -12,7 +12,7 @@ export const ErrorType = {
         ErrorCreating: 'Error creating user',
         AlredyExists: 'User already exists',
     },
-    Argon2: {
+    bcrypt: {
         ErrorHashing: 'Error hashing password',
         ErrorVerifying: 'Error verifying password',
     }
