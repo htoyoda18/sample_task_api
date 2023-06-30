@@ -7,7 +7,7 @@ export class Repository {
         this.User = userRepository;
     }
 
-    static NewRepository(): Repository {
+    static newRepository(): Repository {
         const userRepository = new UserRepository();
 
         return new Repository(userRepository);

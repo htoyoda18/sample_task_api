@@ -6,7 +6,7 @@ import { logger } from '../../shared/logger';
 import { generateToken } from '../../shared/auth';
 
 interface UserControllerIF {
-    CreateUser(req: Request, res: Response): Promise<void>;
+    createUser(req: Request, res: Response): Promise<void>;
 }
 
 export class UserController implements UserControllerIF {
@@ -16,7 +16,7 @@ export class UserController implements UserControllerIF {
         this.userUsecase = userUsecase;
     }
 
-    async CreateUser(req: Request, res: Response): Promise<void> {
+    async createUser(req: Request, res: Response): Promise<void> {
         try {
             const validationResult = userCreateRequest.validate(req.body);
             if (validationResult.error) {
@@ -26,7 +26,7 @@ export class UserController implements UserControllerIF {
             }
 
             const userCreateRequestData: userCreateRequestData = validationResult.value;
-            const newUser = await this.userUsecase.CreateUser(userCreateRequestData);
+            const newUser = await this.userUsecase.createUser(userCreateRequestData);
             if (newUser) {
                 const token = generateToken(newUser.id);
                 res.status(200).send(token);

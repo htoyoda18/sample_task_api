@@ -8,8 +8,8 @@ export class Usecase {
         this.User = userUsecase;
     }
 
-    static NewUsecase(): Usecase {
-        const repository = Repository.NewRepository();
+    static newUsecase(): Usecase {
+        const repository = Repository.newRepository();
 
         const userUsecase = new UserUsecase(repository.User);
 

@@ -7,7 +7,7 @@ import { logger } from '..//shared/logger';
 import { hashPassword } from '../shared/bcrypt';
 
 interface UserUsecaseIF {
-    CreateUser(userCreateRequestData: userCreateRequestData): void;
+    createUser(userCreateRequestData: userCreateRequestData): void;
 }
 
 export class UserUsecase implements UserUsecaseIF {
@@ -17,8 +17,8 @@ export class UserUsecase implements UserUsecaseIF {
         this.userRepository = userRepository;
     }
 
-    async CreateUser(userCreateRequestData: userCreateRequestData): Promise<User | null> {
-        const existUser = await this.userRepository.GetUserbyEmail(userCreateRequestData.email);
+    async createUser(userCreateRequestData: userCreateRequestData): Promise<User | null> {
+        const existUser = await this.userRepository.getUserbyEmail(userCreateRequestData.email);
 
         if (existUser) {
             logger.warn(ErrorType.User.AlredyExists);
@@ -33,7 +33,7 @@ export class UserUsecase implements UserUsecaseIF {
                 pass: hashPass,
             }
 
-            const newUser = await this.userRepository.CreateUser(userData);
+            const newUser = await this.userRepository.createUser(userData);
             return newUser;
         } catch (error) {
             logger.warn(ErrorType.User.ErrorCreating, error);

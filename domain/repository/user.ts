@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 
 export interface UserRepositoryIF {
-    GetUserbyEmail(email: string): Promise<User | null>;
-    CreateUser(user: User): Promise<User>;
+    getUserbyEmail(email: string): Promise<User | null>;
+    createUser(user: User): Promise<User>;
 }

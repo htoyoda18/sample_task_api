@@ -10,12 +10,12 @@ export const Router = (): core.Express => {
     app.use(morgan('dev'));
     app.use(express.json());
 
-    const controller = Controller.NewController();
+    const controller = Controller.newController();
 
     app.route('/users')
         .post(async (req, res) => {
             try {
-                controller.User.CreateUser(req, res);
+                controller.User.createUser(req, res);
             } catch (error) {
                 logger.error(error);
                 res.status(500).send('An unexpected error occurred');

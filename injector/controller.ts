@@ -8,8 +8,8 @@ export class Controller {
         this.User = userController;
     }
 
-    static NewController(): Controller {
-        const usecase = Usecase.NewUsecase();
+    static newController(): Controller {
+        const usecase = Usecase.newUsecase();
 
         const userController = new UserController(usecase.User);
 
