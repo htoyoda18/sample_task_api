@@ -1,6 +1,6 @@
 import { UserRepository } from "../infrastructure/user";
 import { userCreateRequestData } from '../interface/controller/request/user';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { generateUUID } from '../shared/uuid';
 import { ErrorType } from '../shared/error';
 import { logger } from '..//shared/logger';
@@ -17,7 +17,7 @@ export class UserUsecase implements UserUsecaseIF {
         this.userRepository = userRepository;
     }
 
-    async CreateUser(userCreateRequestData: userCreateRequestData): Promise<Prisma.UserCreateInput | null> {
+    async CreateUser(userCreateRequestData: userCreateRequestData): Promise<User | null> {
         const existUser = await this.userRepository.GetUserbyEmail(userCreateRequestData.email);
 
         if (existUser) {
